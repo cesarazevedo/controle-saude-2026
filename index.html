@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Saude 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-glow {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 60%, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        /* Stats Cards */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Streak */
+        .streak-bar {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .streak-bar h3 {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .streak-flames {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+        }
+
+        .streak-count {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f59e0b;
+            margin-top: 0.3rem;
+        }
+
+        /* Progress bar */
+        .progress-section {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .progress-header h3 {
+            font-size: 1rem;
+            color: #ccc;
+        }
+
+        .progress-header span {
+            font-size: 0.9rem;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .progress-track {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #10b981);
+            border-radius: 999px;
+            transition: width 1s ease;
+            width: 0%;
+        }
+
+        /* Motivational quote */
+        .quote {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            font-style: italic;
+            color: #888;
+            font-size: 1.05rem;
+            border-left: 3px solid #6366f1;
+            background: rgba(99, 102, 241, 0.04);
+            border-radius: 0 12px 12px 0;
+        }
+
+        /* Calendar Grid */
+        .calendar-section {
+            margin-bottom: 2rem;
+        }
+
+        .calendar-section h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        .month-block {
+            margin-bottom: 1.5rem;
+        }
+
+        .month-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #6366f1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .days-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .day-cell {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            color: #555;
+            transition: all 0.3s;
+            position: relative;
+            cursor: default;
+        }
+
+        .day-cell.filled {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.6), rgba(16, 185, 129, 0.6));
+            border-color: rgba(99, 102, 241, 0.4);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 0 8px rgba(99, 102, 241, 0.2);
+        }
+
+        .day-cell.today {
+            border-color: #f59e0b;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .day-cell.future {
+            opacity: 0.3;
+        }
+
+        .day-cell .tooltip {
+            display: none;
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e1e2e;
+            color: #e0e0e0;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            z-index: 10;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-style: normal;
+        }
+
+        .day-cell:hover .tooltip {
+            display: block;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .legend-box {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .legend-box.filled {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.6), rgba(16, 185, 129, 0.6));
+        }
+
+        .legend-box.empty {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .legend-box.today-legend {
+            background: rgba(255, 255, 255, 0.04);
+            border: 2px solid #f59e0b;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: #888;
+        }
+
+        .loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(99, 102, 241, 0.2);
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Last update */
+        .last-update {
+            text-align: center;
+            color: #555;
+            font-size: 0.8rem;
+            margin-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .day-cell { width: 22px; height: 22px; font-size: 0.55rem; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .container { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <div class="container">
+        <header>
+            <h1>Controle de Saude 2026</h1>
+            <p class="subtitle">Alimentacao & Atividade Fisica</p>
+        </header>
+
+        <div id="content">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Carregando dados da planilha...</p>
+            </div>
+        </div>
+
+        <div class="last-update" id="lastUpdate"></div>
+    </div>
+
+    <script>
+        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSFY2XH6zeZ41y_nxyXmVKKOwFdxRcWDhxSzGb0zwkEfB3DxAYQB9Db_TC3AJwVlME26RhXjyHJzhHe/pub?gid=0&single=true&output=csv';
+
+        const MONTHS_PT = ['janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho',
+                           'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+
+        const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        const QUOTES = [
+            '"A disciplina e a ponte entre metas e conquistas." - Jim Rohn',
+            '"Cuide do seu corpo. E o unico lugar que voce tem para viver." - Jim Rohn',
+            '"O segredo de ir adiante e comecar." - Mark Twain',
+            '"Pequenos progressos diarios levam a grandes resultados." - Satya Nani',
+            '"Voce nao precisa ser perfeito, so precisa ser constante."',
+            '"A mudanca nao acontece de uma vez. Acontece um dia de cada vez."',
+            '"Cada dia e uma nova chance de se tornar mais forte."',
+            '"Sua unica competicao e a pessoa que voce era ontem."',
+            '"O corpo alcanca o que a mente acredita."',
+            '"Consistencia supera intensidade."'
+        ];
+
+        function normalizeMonth(str) {
+            return str.toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[çc]/g, 'c')
+                .trim();
+        }
+
+        function parseCSV(text) {
+            const lines = text.split('\n');
+            const data = {};
+
+            for (const line of lines) {
+                // Simple CSV parse handling quoted fields
+                const cols = [];
+                let current = '';
+                let inQuotes = false;
+                for (let i = 0; i < line.length; i++) {
+                    const ch = line[i];
+                    if (ch === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (ch === ',' && !inQuotes) {
+                        cols.push(current.trim());
+                        current = '';
+                    } else {
+                        current += ch;
+                    }
+                }
+                cols.push(current.trim());
+
+                const firstCol = normalizeMonth(cols[0]);
+                const monthIndex = MONTHS_PT.indexOf(firstCol);
+
+                if (monthIndex !== -1) {
+                    const days = {};
+                    for (let d = 1; d <= 31; d++) {
+                        const val = cols[d] || '';
+                        if (val.trim() !== '') {
+                            days[d] = val.trim();
+                        }
+                    }
+                    data[monthIndex] = days;
+                }
+            }
+
+            return data;
+        }
+
+        function calculateStats(data) {
+            let totalFilled = 0;
+            let currentStreak = 0;
+            let bestStreak = 0;
+            let tempStreak = 0;
+
+            const today = new Date();
+            const todayYear = today.getFullYear();
+            const todayMonth = today.getMonth();
+            const todayDay = today.getDate();
+
+            // Calculate total days in year up to today
+            let totalDaysSoFar = 0;
+            for (let m = 0; m < 12; m++) {
+                for (let d = 1; d <= DAYS_IN_MONTH[m]; d++) {
+                    const cellDate = new Date(2026, m, d);
+                    if (cellDate <= today) {
+                        totalDaysSoFar++;
+                    }
+                }
+            }
+
+            // Traverse all days in order to find streaks and count
+            const allDays = [];
+            for (let m = 0; m < 12; m++) {
+                for (let d = 1; d <= DAYS_IN_MONTH[m]; d++) {
+                    const isFilled = data[m] && data[m][d];
+                    const cellDate = new Date(2026, m, d);
+                    const isPastOrToday = cellDate <= today;
+                    allDays.push({ month: m, day: d, filled: !!isFilled, isPastOrToday });
+                    if (isFilled) totalFilled++;
+                }
+            }
+
+            // Best streak
+            tempStreak = 0;
+            for (const day of allDays) {
+                if (day.filled) {
+                    tempStreak++;
+                    bestStreak = Math.max(bestStreak, tempStreak);
+                } else {
+                    tempStreak = 0;
+                }
+            }
+
+            // Current streak (count backwards from today)
+            currentStreak = 0;
+            for (let i = allDays.length - 1; i >= 0; i--) {
+                if (!allDays[i].isPastOrToday) continue;
+                if (allDays[i].filled) {
+                    currentStreak++;
+                } else {
+                    break;
+                }
+            }
+
+            const percentage = totalDaysSoFar > 0 ? Math.round((totalFilled / totalDaysSoFar) * 100) : 0;
+            const yearPercentage = Math.round((totalFilled / 365) * 100);
+
+            return { totalFilled, currentStreak, bestStreak, percentage, yearPercentage, totalDaysSoFar };
+        }
+
+        function render(data) {
+            const stats = calculateStats(data);
+            const today = new Date();
+            const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+
+            let html = '';
+
+            // Quote
+            html += `<div class="quote">${quote}</div>`;
+
+            // Stats
+            html += `<div class="stats">`;
+            html += `<div class="stat-card">
+                        <div class="stat-number">${stats.totalFilled}</div>
+                        <div class="stat-label">Dias registrados</div>
+                     </div>`;
+            html += `<div class="stat-card">
+                        <div class="stat-number">${stats.percentage}%</div>
+                        <div class="stat-label">Consistencia</div>
+                     </div>`;
+            html += `<div class="stat-card">
+                        <div class="stat-number">${stats.currentStreak}</div>
+                        <div class="stat-label">Sequencia atual</div>
+                     </div>`;
+            html += `<div class="stat-card">
+                        <div class="stat-number">${stats.bestStreak}</div>
+                        <div class="stat-label">Melhor sequencia</div>
+                     </div>`;
+            html += `</div>`;
+
+            // Streak bar
+            if (stats.currentStreak > 0) {
+                const flames = '🔥'.repeat(Math.min(stats.currentStreak, 20));
+                html += `<div class="streak-bar">
+                            <h3>Sequencia de fogo</h3>
+                            <div class="streak-flames">${flames}</div>
+                            <div class="streak-count">${stats.currentStreak} dia${stats.currentStreak > 1 ? 's' : ''} seguido${stats.currentStreak > 1 ? 's' : ''}!</div>
+                         </div>`;
+            }
+
+            // Year progress
+            html += `<div class="progress-section">
+                        <div class="progress-header">
+                            <h3>Progresso do ano</h3>
+                            <span>${stats.totalFilled}/365 dias</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                     </div>`;
+
+            // Legend
+            html += `<div class="legend">
+                        <div class="legend-item"><div class="legend-box filled"></div> Dia registrado</div>
+                        <div class="legend-item"><div class="legend-box empty"></div> Sem registro</div>
+                        <div class="legend-item"><div class="legend-box today-legend"></div> Hoje</div>
+                     </div>`;
+
+            // Calendar
+            html += `<div class="calendar-section"><h2>Calendario 2026</h2>`;
+
+            const monthNames = ['Janeiro', 'Fevereiro', 'Marco', 'Abril', 'Maio', 'Junho',
+                                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+            for (let m = 0; m < 12; m++) {
+                html += `<div class="month-block">`;
+                html += `<div class="month-name">${monthNames[m]}</div>`;
+                html += `<div class="days-grid">`;
+
+                for (let d = 1; d <= DAYS_IN_MONTH[m]; d++) {
+                    const isFilled = data[m] && data[m][d];
+                    const cellDate = new Date(2026, m, d);
+                    const isToday = (today.getFullYear() === 2026 && today.getMonth() === m && today.getDate() === d);
+                    const isFuture = cellDate > today;
+
+                    let classes = 'day-cell';
+                    if (isFilled) classes += ' filled';
+                    if (isToday) classes += ' today';
+                    if (isFuture && !isFilled) classes += ' future';
+
+                    const tooltipText = isFilled ? `${d}/${m + 1} - ${data[m][d]}` : `${d}/${m + 1}`;
+
+                    html += `<div class="${classes}">
+                                ${d}
+                                <div class="tooltip">${tooltipText}</div>
+                             </div>`;
+                }
+
+                html += `</div></div>`;
+            }
+
+            html += `</div>`;
+
+            document.getElementById('content').innerHTML = html;
+
+            // Animate progress bar
+            setTimeout(() => {
+                const fill = document.getElementById('progressFill');
+                if (fill) fill.style.width = stats.yearPercentage + '%';
+            }, 100);
+
+            document.getElementById('lastUpdate').textContent =
+                `Ultima atualizacao: ${today.toLocaleDateString('pt-BR')} as ${today.toLocaleTimeString('pt-BR')}`;
+        }
+
+        async function loadData() {
+            try {
+                const response = await fetch(SHEET_CSV_URL);
+                const text = await response.text();
+                const data = parseCSV(text);
+                render(data);
+            } catch (err) {
+                document.getElementById('content').innerHTML = `
+                    <div class="loading">
+                        <p>Erro ao carregar dados. Tentando novamente...</p>
+                    </div>`;
+                setTimeout(loadData, 5000);
+            }
+        }
+
+        // Load on page load
+        loadData();
+
+        // Auto-refresh every 5 minutes
+        setInterval(loadData, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
