@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Saude 2026</title>
+    <title>Controle de Saúde 2026</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -321,7 +321,7 @@
             border-color: rgba(16, 185, 129, 0.6);
         }
 
-        .day-cell.not-productive {
+        .day-cell.missed {
             background: rgba(239, 68, 68, 0.5);
             border-color: rgba(239, 68, 68, 0.45);
             color: #fff;
@@ -329,7 +329,7 @@
             box-shadow: 0 0 8px rgba(239, 68, 68, 0.2);
         }
 
-        [data-theme="light"] .day-cell.not-productive {
+        [data-theme="light"] .day-cell.missed {
             background: rgba(239, 68, 68, 0.6);
             border-color: rgba(239, 68, 68, 0.55);
         }
@@ -392,7 +392,7 @@
             background: rgba(16, 185, 129, 0.6);
         }
 
-        .legend-box.not-productive {
+        .legend-box.missed {
             background: rgba(239, 68, 68, 0.55);
         }
 
@@ -451,8 +451,8 @@
     <div class="bg-glow"></div>
     <div class="container">
         <header>
-            <h1>Controle de Saude 2026</h1>
-            <p class="subtitle">Alimentacao & Atividade Fisica</p>
+            <h1>Controle de Saúde 2026</h1>
+            <p class="subtitle">Alimentação & Atividade Física</p>
             <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
                 <span id="themeIcon">&#9788;</span>
                 <span class="label" id="themeLabel">Claro</span>
@@ -477,22 +477,20 @@
 
         const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-        const NOT_PRODUCTIVE_KEYWORDS = ['x', 'nao', 'n', 'no', 'ruim', 'mal', 'pessimo', 'falha', 'falhei', 'nada', 'nope'];
-
         const QUOTES = [
-            '"A disciplina e a ponte entre metas e conquistas." - Jim Rohn',
-            '"Cuide do seu corpo. E o unico lugar que voce tem para viver." - Jim Rohn',
-            '"O segredo de ir adiante e comecar." - Mark Twain',
-            '"Pequenos progressos diarios levam a grandes resultados." - Satya Nani',
-            '"Voce nao precisa ser perfeito, so precisa ser constante."',
-            '"A mudanca nao acontece de uma vez. Acontece um dia de cada vez."',
-            '"Cada dia e uma nova chance de se tornar mais forte."',
-            '"Sua unica competicao e a pessoa que voce era ontem."',
-            '"O corpo alcanca o que a mente acredita."',
-            '"Consistencia supera intensidade."'
+            '"A disciplina é a ponte entre metas e conquistas." — Jim Rohn',
+            '"Cuide do seu corpo. É o único lugar que você tem para viver." — Jim Rohn',
+            '"O segredo de ir adiante é começar." — Mark Twain',
+            '"Pequenos progressos diários levam a grandes resultados." — Satya Nani',
+            '"Você não precisa ser perfeito, só precisa ser constante."',
+            '"A mudança não acontece de uma vez. Acontece um dia de cada vez."',
+            '"Cada dia é uma nova chance de se tornar mais forte."',
+            '"Sua única competição é a pessoa que você era ontem."',
+            '"O corpo alcança o que a mente acredita."',
+            '"Consistência supera intensidade."'
         ];
 
-        // Theme management
+        // Gerenciamento de tema
         function getTheme() {
             return localStorage.getItem('theme') || 'dark';
         }
@@ -502,10 +500,10 @@
             const icon = document.getElementById('themeIcon');
             const label = document.getElementById('themeLabel');
             if (theme === 'dark') {
-                icon.innerHTML = '&#9788;';  // sun
+                icon.innerHTML = '&#9788;';
                 label.textContent = 'Claro';
             } else {
-                icon.innerHTML = '&#9789;';  // moon
+                icon.innerHTML = '&#9789;';
                 label.textContent = 'Escuro';
             }
         }
@@ -517,16 +515,7 @@
             applyTheme(next);
         }
 
-        // Apply saved theme on load
         applyTheme(getTheme());
-
-        function isNotProductive(value) {
-            const normalized = value.toLowerCase()
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .trim();
-            return NOT_PRODUCTIVE_KEYWORDS.includes(normalized);
-        }
 
         function normalizeMonth(str) {
             return str.toLowerCase()
@@ -565,10 +554,7 @@
                     for (let d = 1; d <= 31; d++) {
                         const val = cols[d] || '';
                         if (val.trim() !== '') {
-                            days[d] = {
-                                text: val.trim(),
-                                productive: !isNotProductive(val)
-                            };
+                            days[d] = val.trim();
                         }
                     }
                     data[monthIndex] = days;
@@ -580,40 +566,35 @@
 
         function calculateStats(data) {
             let totalProductive = 0;
-            let totalNotProductive = 0;
+            let totalMissed = 0;
             let currentStreak = 0;
             let bestStreak = 0;
             let tempStreak = 0;
 
             const today = new Date();
-
-            let totalDaysSoFar = 0;
-            for (let m = 0; m < 12; m++) {
-                for (let d = 1; d <= DAYS_IN_MONTH[m]; d++) {
-                    const cellDate = new Date(2026, m, d);
-                    if (cellDate <= today) totalDaysSoFar++;
-                }
-            }
+            today.setHours(23, 59, 59, 999);
 
             const allDays = [];
             for (let m = 0; m < 12; m++) {
                 for (let d = 1; d <= DAYS_IN_MONTH[m]; d++) {
-                    const entry = data[m] && data[m][d];
+                    const hasFilled = data[m] && data[m][d];
                     const cellDate = new Date(2026, m, d);
-                    const isPastOrToday = cellDate <= today;
-                    const isProductive = entry ? entry.productive : false;
-                    allDays.push({ month: m, day: d, filled: !!entry, productive: isProductive, isPastOrToday });
-                    if (entry) {
-                        if (entry.productive) totalProductive++;
-                        else totalNotProductive++;
+                    const isPast = cellDate <= today;
+                    allDays.push({ month: m, day: d, filled: !!hasFilled, isPast });
+                    if (hasFilled) {
+                        totalProductive++;
+                    } else if (isPast) {
+                        totalMissed++;
                     }
                 }
             }
 
-            // Best streak (productive only)
+            const totalPastDays = totalProductive + totalMissed;
+
+            // Melhor sequência
             tempStreak = 0;
             for (const day of allDays) {
-                if (day.filled && day.productive) {
+                if (day.filled) {
                     tempStreak++;
                     bestStreak = Math.max(bestStreak, tempStreak);
                 } else {
@@ -621,69 +602,69 @@
                 }
             }
 
-            // Current streak (productive, backwards from today)
+            // Sequência atual (de trás para frente a partir de hoje)
             currentStreak = 0;
             for (let i = allDays.length - 1; i >= 0; i--) {
-                if (!allDays[i].isPastOrToday) continue;
-                if (allDays[i].filled && allDays[i].productive) {
+                if (!allDays[i].isPast) continue;
+                if (allDays[i].filled) {
                     currentStreak++;
                 } else {
                     break;
                 }
             }
 
-            const totalFilled = totalProductive + totalNotProductive;
-            const percentage = totalDaysSoFar > 0 ? Math.round((totalProductive / totalDaysSoFar) * 100) : 0;
+            const percentage = totalPastDays > 0 ? Math.round((totalProductive / totalPastDays) * 100) : 0;
             const yearPercentage = Math.round((totalProductive / 365) * 100);
 
-            return { totalProductive, totalNotProductive, totalFilled, currentStreak, bestStreak, percentage, yearPercentage, totalDaysSoFar };
+            return { totalProductive, totalMissed, currentStreak, bestStreak, percentage, yearPercentage, totalPastDays };
         }
 
         function render(data) {
             const stats = calculateStats(data);
             const today = new Date();
+            today.setHours(23, 59, 59, 999);
             const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
 
             let html = '';
 
-            // Quote
+            // Frase motivacional
             html += `<div class="quote">${quote}</div>`;
 
-            // Stats
+            // Estatísticas
             html += `<div class="stats">`;
             html += `<div class="stat-card">
                         <div class="stat-number green">${stats.totalProductive}</div>
                         <div class="stat-label">Dias produtivos</div>
                      </div>`;
             html += `<div class="stat-card">
-                        <div class="stat-number red">${stats.totalNotProductive}</div>
-                        <div class="stat-label">Dias nao produtivos</div>
+                        <div class="stat-number red">${stats.totalMissed}</div>
+                        <div class="stat-label">Dias perdidos</div>
                      </div>`;
             html += `<div class="stat-card">
                         <div class="stat-number gradient">${stats.percentage}%</div>
-                        <div class="stat-label">Consistencia</div>
+                        <div class="stat-label">Consistência</div>
                      </div>`;
             html += `<div class="stat-card">
                         <div class="stat-number green">${stats.currentStreak}</div>
-                        <div class="stat-label">Sequencia atual</div>
+                        <div class="stat-label">Sequência atual</div>
                      </div>`;
             html += `<div class="stat-card">
                         <div class="stat-number gradient">${stats.bestStreak}</div>
-                        <div class="stat-label">Melhor sequencia</div>
+                        <div class="stat-label">Melhor sequência</div>
                      </div>`;
             html += `</div>`;
 
-            // Streak bar
+            // Barra de sequência
             if (stats.currentStreak > 0) {
                 const flames = '\uD83D\uDD25'.repeat(Math.min(stats.currentStreak, 20));
                 html += `<div class="streak-bar">
-                            <h3>Sequencia de fogo</h3>
+                            <h3>Sequência de fogo</h3>
                             <div class="streak-flames">${flames}</div>
-                            <div class="streak-count">${stats.currentStreak} dia${stats.currentStreak > 1 ? 's' : ''} produtivo${stats.currentStreak > 1 ? 's' : ''} seguido${stats.currentStreak > 1 ? 's' : ''}!</div>
+                            <div class="streak-count">${stats.currentStreak} dia${stats.currentStreak > 1 ? 's' : ''} seguido${stats.currentStreak > 1 ? 's' : ''}!</div>
                          </div>`;
             }
 
-            // Year progress
+            // Progresso do ano
             html += `<div class="progress-section">
                         <div class="progress-header">
                             <h3>Progresso do ano</h3>
@@ -694,25 +675,18 @@
                         </div>
                      </div>`;
 
-            // Legend
+            // Legenda
             html += `<div class="legend">
-                        <div class="legend-item"><div class="legend-box productive"></div> Produtivo</div>
-                        <div class="legend-item"><div class="legend-box not-productive"></div> Nao produtivo</div>
-                        <div class="legend-item"><div class="legend-box empty"></div> Sem registro</div>
+                        <div class="legend-item"><div class="legend-box productive"></div> Preenchido (produtivo)</div>
+                        <div class="legend-item"><div class="legend-box missed"></div> Vazio (dia perdido)</div>
+                        <div class="legend-item"><div class="legend-box empty"></div> Dia futuro</div>
                         <div class="legend-item"><div class="legend-box today-legend"></div> Hoje</div>
                      </div>`;
 
-            // How to use
-            html += `<div class="progress-section" style="margin-bottom:1.5rem; font-size:0.85rem; color:var(--text-muted);">
-                        <strong style="color:var(--text-heading);">Como preencher a planilha:</strong><br>
-                        <span style="color:#10b981;">Verde</span> = qualquer texto (ex: "caminhada", "dieta ok", "treino")<br>
-                        <span style="color:#ef4444;">Vermelho</span> = escreva: <code>x</code>, <code>nao</code>, <code>n</code>, <code>ruim</code>, <code>mal</code>, <code>nada</code> ou <code>falhei</code>
-                     </div>`;
+            // Calendário
+            html += `<div class="calendar-section"><h2>Calendário 2026</h2>`;
 
-            // Calendar
-            html += `<div class="calendar-section"><h2>Calendario 2026</h2>`;
-
-            const monthNames = ['Janeiro', 'Fevereiro', 'Marco', 'Abril', 'Maio', 'Junho',
+            const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
                                 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
             for (let m = 0; m < 12; m++) {
@@ -725,15 +699,26 @@
                     const cellDate = new Date(2026, m, d);
                     const isToday = (today.getFullYear() === 2026 && today.getMonth() === m && today.getDate() === d);
                     const isFuture = cellDate > today;
+                    const isPast = !isFuture;
 
                     let classes = 'day-cell';
                     if (entry) {
-                        classes += entry.productive ? ' productive' : ' not-productive';
+                        classes += ' productive';
+                    } else if (isPast) {
+                        classes += ' missed';
+                    } else {
+                        classes += ' future';
                     }
                     if (isToday) classes += ' today';
-                    if (isFuture && !entry) classes += ' future';
 
-                    const tooltipText = entry ? `${d}/${m + 1} - ${entry.text}` : `${d}/${m + 1}`;
+                    let tooltipText;
+                    if (entry) {
+                        tooltipText = `${d}/${m + 1} — ${entry}`;
+                    } else if (isPast) {
+                        tooltipText = `${d}/${m + 1} — Sem registro`;
+                    } else {
+                        tooltipText = `${d}/${m + 1}`;
+                    }
 
                     html += `<div class="${classes}">
                                 ${d}
@@ -748,14 +733,14 @@
 
             document.getElementById('content').innerHTML = html;
 
-            // Animate progress bar
+            // Animar barra de progresso
             setTimeout(() => {
                 const fill = document.getElementById('progressFill');
                 if (fill) fill.style.width = stats.yearPercentage + '%';
             }, 100);
 
             document.getElementById('lastUpdate').textContent =
-                `Ultima atualizacao: ${today.toLocaleDateString('pt-BR')} as ${today.toLocaleTimeString('pt-BR')}`;
+                `Última atualização: ${today.toLocaleDateString('pt-BR')} às ${today.toLocaleTimeString('pt-BR')}`;
         }
 
         async function loadData() {
