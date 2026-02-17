@@ -129,6 +129,46 @@
             color: var(--text-muted);
         }
 
+        /* Dynamic message */
+        .dynamic-msg {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.2rem 1.5rem;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+        }
+
+        .dynamic-msg.great {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #10b981;
+        }
+
+        .dynamic-msg.good {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.3);
+            color: #818cf8;
+        }
+
+        .dynamic-msg.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.3);
+            color: #f59e0b;
+        }
+
+        .dynamic-msg.danger {
+            background: rgba(239, 68, 68, 0.08);
+            border-color: rgba(239, 68, 68, 0.25);
+            color: #ef4444;
+        }
+
+        .dynamic-msg .msg-icon {
+            font-size: 1.4rem;
+            margin-right: 0.4rem;
+        }
+
         /* Stats Cards */
         .stats {
             display: grid;
@@ -157,13 +197,8 @@
             font-weight: 800;
         }
 
-        .stat-number.green {
-            color: #10b981;
-        }
-
-        .stat-number.red {
-            color: #ef4444;
-        }
+        .stat-number.green { color: #10b981; }
+        .stat-number.red { color: #ef4444; }
 
         .stat-number.gradient {
             background: linear-gradient(135deg, #6366f1, #10b981);
@@ -204,6 +239,72 @@
             font-weight: 700;
             color: #f59e0b;
             margin-top: 0.3rem;
+        }
+
+        /* Badges */
+        .badges-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .badges-section h3 {
+            font-size: 1rem;
+            color: var(--text-heading);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .badges-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            transition: transform 0.2s;
+        }
+
+        .badge:hover {
+            transform: scale(1.05);
+        }
+
+        .badge.unlocked {
+            border-color: rgba(245, 158, 11, 0.4);
+            background: rgba(245, 158, 11, 0.08);
+            color: #f59e0b;
+        }
+
+        .badge.locked {
+            opacity: 0.35;
+            color: var(--text-muted);
+        }
+
+        .badge .badge-icon {
+            font-size: 1.3rem;
+        }
+
+        .badge .badge-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .badge .badge-name {
+            line-height: 1.2;
+        }
+
+        .badge .badge-desc {
+            font-size: 0.7rem;
+            font-weight: 400;
+            opacity: 0.7;
         }
 
         /* Progress bar */
@@ -388,13 +489,8 @@
             border-radius: 4px;
         }
 
-        .legend-box.productive {
-            background: rgba(16, 185, 129, 0.6);
-        }
-
-        .legend-box.missed {
-            background: rgba(239, 68, 68, 0.55);
-        }
+        .legend-box.productive { background: rgba(16, 185, 129, 0.6); }
+        .legend-box.missed { background: rgba(239, 68, 68, 0.55); }
 
         .legend-box.empty {
             background: var(--day-bg);
@@ -436,14 +532,83 @@
             padding-bottom: 2rem;
         }
 
+        /* Mobile list view */
+        .month-list { display: none; }
+
+        .month-list-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .month-list-item:last-child { border-bottom: none; }
+
+        .month-list-item .day-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .month-list-item .day-num.productive {
+            background: rgba(16, 185, 129, 0.55);
+            color: #fff;
+        }
+
+        .month-list-item .day-num.missed {
+            background: rgba(239, 68, 68, 0.5);
+            color: #fff;
+        }
+
+        .month-list-item .day-num.future {
+            background: var(--day-bg);
+            color: var(--day-text);
+            opacity: 0.4;
+        }
+
+        .month-list-item .day-num.today-num {
+            box-shadow: 0 0 0 2px #f59e0b;
+        }
+
+        .month-list-item .day-info {
+            flex: 1;
+            color: var(--text);
+        }
+
+        .month-list-item .day-info .day-date {
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .month-list-item .day-info .day-detail {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .month-list-item .day-status-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             h1 { font-size: 1.6rem; }
-            .day-cell { width: 22px; height: 22px; font-size: 0.55rem; }
             .stats { grid-template-columns: repeat(2, 1fr); }
             .container { padding: 1rem; }
             .theme-toggle { padding: 6px 10px; font-size: 1rem; }
             .theme-toggle .label { display: none; }
+            .days-grid { display: none; }
+            .month-list { display: block; }
+            .badge { padding: 8px 12px; font-size: 0.75rem; }
+            .badge .badge-icon { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -489,6 +654,8 @@
             '"O corpo alcança o que a mente acredita."',
             '"Consistência supera intensidade."'
         ];
+
+        const WEEKDAY_NAMES = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
 
         // Gerenciamento de tema
         function getTheme() {
@@ -613,10 +780,79 @@
                 }
             }
 
+            // Meses perfeitos
+            let perfectMonths = 0;
+            for (let m = 0; m < 12; m++) {
+                const lastDay = new Date(2026, m, DAYS_IN_MONTH[m]);
+                if (lastDay > today) continue;
+                let allFilled = true;
+                for (let d = 1; d <= DAYS_IN_MONTH[m]; d++) {
+                    if (!(data[m] && data[m][d])) { allFilled = false; break; }
+                }
+                if (allFilled) perfectMonths++;
+            }
+
+            // Semanas completas
+            let completeWeeks = 0;
+            for (let i = 0; i + 6 < allDays.length; i++) {
+                let weekOk = true;
+                for (let j = 0; j < 7; j++) {
+                    if (!allDays[i + j].filled) { weekOk = false; break; }
+                }
+                if (weekOk) completeWeeks++;
+            }
+
             const percentage = totalPastDays > 0 ? Math.round((totalProductive / totalPastDays) * 100) : 0;
             const yearPercentage = Math.round((totalProductive / 365) * 100);
 
-            return { totalProductive, totalMissed, currentStreak, bestStreak, percentage, yearPercentage, totalPastDays };
+            // Últimos 7 dias
+            const last7 = allDays.filter(d => d.isPast).slice(-7);
+            const last7Filled = last7.filter(d => d.filled).length;
+
+            return { totalProductive, totalMissed, currentStreak, bestStreak, percentage, yearPercentage, totalPastDays, perfectMonths, completeWeeks, last7Filled };
+        }
+
+        function getDynamicMessage(stats) {
+            const { percentage, currentStreak, last7Filled, totalPastDays } = stats;
+
+            if (totalPastDays === 0) {
+                return { text: 'Comece hoje! O primeiro passo é o mais importante.', icon: '\u{1F680}', level: 'good' };
+            }
+
+            // Sequência alta
+            if (currentStreak >= 30) return { text: 'Imparável! 30+ dias seguidos. Você é uma máquina!', icon: '\u{1F451}', level: 'great' };
+            if (currentStreak >= 14) return { text: 'Duas semanas firme! Isso já virou hábito!', icon: '\u{1F4AA}', level: 'great' };
+            if (currentStreak >= 7) return { text: 'Uma semana inteira! Continue assim, está voando!', icon: '\u{1F525}', level: 'great' };
+
+            // Baseado nos últimos 7 dias
+            if (last7Filled >= 6) return { text: 'Semana quase perfeita! Você está arrasando!', icon: '\u{2B50}', level: 'great' };
+            if (last7Filled >= 4) return { text: 'Boa semana! Continue mantendo o ritmo.', icon: '\u{1F4AA}', level: 'good' };
+
+            // Baseado na consistência geral
+            if (percentage >= 80) return { text: 'Consistência incrível! Mais de 80% dos dias preenchidos!', icon: '\u{1F31F}', level: 'great' };
+            if (percentage >= 60) return { text: 'Bom progresso! Continue firme, você está no caminho certo.', icon: '\u{1F4A1}', level: 'good' };
+            if (percentage >= 40) return { text: 'Dá para melhorar! Tente preencher um dia de cada vez.', icon: '\u{26A1}', level: 'warning' };
+
+            // Precisa melhorar
+            if (last7Filled <= 1) return { text: 'Bora retomar! Comece hoje — um dia de cada vez.', icon: '\u{1F4AA}', level: 'danger' };
+
+            return { text: 'Cada dia conta. Não desista, recomece agora!', icon: '\u{1F331}', level: 'warning' };
+        }
+
+        function getBadges(stats) {
+            const badges = [
+                { icon: '\u{1F31F}', name: 'Primeiro Dia', desc: 'Registrou o primeiro dia', unlocked: stats.totalProductive >= 1 },
+                { icon: '\u{1F525}', name: '7 Dias Seguidos', desc: 'Sequência de uma semana', unlocked: stats.bestStreak >= 7 },
+                { icon: '\u{1F4AA}', name: '14 Dias Seguidos', desc: 'Sequência de duas semanas', unlocked: stats.bestStreak >= 14 },
+                { icon: '\u{1F451}', name: '30 Dias Seguidos', desc: 'Um mês inteiro de sequência', unlocked: stats.bestStreak >= 30 },
+                { icon: '\u{1F3C6}', name: 'Mês Perfeito', desc: 'Todos os dias de um mês', unlocked: stats.perfectMonths >= 1 },
+                { icon: '\u{1F48E}', name: 'Trimestre', desc: '90 dias produtivos', unlocked: stats.totalProductive >= 90 },
+                { icon: '\u{1F680}', name: 'Metade do Ano', desc: '182 dias produtivos', unlocked: stats.totalProductive >= 182 },
+                { icon: '\u{2B50}', name: 'Lendário', desc: '365 dias produtivos', unlocked: stats.totalProductive >= 365 },
+                { icon: '\u{1F3AF}', name: 'Consistente', desc: 'Mais de 80% de consistência', unlocked: stats.percentage >= 80 && stats.totalPastDays >= 30 },
+                { icon: '\u{1F4C5}', name: 'Semana Completa', desc: '7 dias corridos preenchidos', unlocked: stats.completeWeeks >= 1 },
+            ];
+            return badges;
         }
 
         function render(data) {
@@ -624,11 +860,19 @@
             const today = new Date();
             today.setHours(23, 59, 59, 999);
             const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+            const dynMsg = getDynamicMessage(stats);
+            const badges = getBadges(stats);
+            const unlockedCount = badges.filter(b => b.unlocked).length;
 
             let html = '';
 
             // Frase motivacional
             html += `<div class="quote">${quote}</div>`;
+
+            // Mensagem dinâmica
+            html += `<div class="dynamic-msg ${dynMsg.level}">
+                        <span class="msg-icon">${dynMsg.icon}</span> ${dynMsg.text}
+                     </div>`;
 
             // Estatísticas
             html += `<div class="stats">`;
@@ -664,6 +908,22 @@
                          </div>`;
             }
 
+            // Medalhas
+            html += `<div class="badges-section">`;
+            html += `<h3>\u{1F3C5} Conquistas (${unlockedCount}/${badges.length})</h3>`;
+            html += `<div class="badges-grid">`;
+            for (const badge of badges) {
+                const cls = badge.unlocked ? 'unlocked' : 'locked';
+                html += `<div class="badge ${cls}">
+                            <span class="badge-icon">${badge.icon}</span>
+                            <span class="badge-info">
+                                <span class="badge-name">${badge.name}</span>
+                                <span class="badge-desc">${badge.desc}</span>
+                            </span>
+                         </div>`;
+            }
+            html += `</div></div>`;
+
             // Progresso do ano
             html += `<div class="progress-section">
                         <div class="progress-header">
@@ -692,8 +952,9 @@
             for (let m = 0; m < 12; m++) {
                 html += `<div class="month-block">`;
                 html += `<div class="month-name">${monthNames[m]}</div>`;
-                html += `<div class="days-grid">`;
 
+                // Grid desktop
+                html += `<div class="days-grid">`;
                 for (let d = 1; d <= DAYS_IN_MONTH[m]; d++) {
                     const entry = data[m] && data[m][d];
                     const cellDate = new Date(2026, m, d);
@@ -725,8 +986,49 @@
                                 <div class="tooltip">${tooltipText}</div>
                              </div>`;
                 }
+                html += `</div>`;
 
-                html += `</div></div>`;
+                // Lista mobile
+                html += `<div class="month-list">`;
+                for (let d = 1; d <= DAYS_IN_MONTH[m]; d++) {
+                    const entry = data[m] && data[m][d];
+                    const cellDate = new Date(2026, m, d);
+                    const isToday = (today.getFullYear() === 2026 && today.getMonth() === m && today.getDate() === d);
+                    const isFuture = cellDate > today;
+                    const isPast = !isFuture;
+                    const weekday = WEEKDAY_NAMES[cellDate.getDay()];
+
+                    let numClass = 'day-num';
+                    let statusIcon = '';
+                    let detail = '';
+
+                    if (entry) {
+                        numClass += ' productive';
+                        statusIcon = '\u2705';
+                        detail = entry;
+                    } else if (isPast) {
+                        numClass += ' missed';
+                        statusIcon = '\u274C';
+                        detail = 'Sem registro';
+                    } else {
+                        numClass += ' future';
+                        statusIcon = '';
+                        detail = '';
+                    }
+                    if (isToday) numClass += ' today-num';
+
+                    html += `<div class="month-list-item">
+                                <div class="${numClass}">${d}</div>
+                                <div class="day-info">
+                                    <div class="day-date">${weekday}, ${d}/${m + 1}${isToday ? ' (hoje)' : ''}</div>
+                                    ${detail ? `<div class="day-detail">${detail}</div>` : ''}
+                                </div>
+                                <span class="day-status-icon">${statusIcon}</span>
+                             </div>`;
+                }
+                html += `</div>`;
+
+                html += `</div>`;
             }
 
             html += `</div>`;
